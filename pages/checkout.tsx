@@ -1,5 +1,5 @@
 import Layout from "@/components/layout";
-import CheckoutForm from "@/components/Checkout-form";
+import CheckoutForm from "@/components/checkout-form";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 
