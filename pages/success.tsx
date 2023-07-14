@@ -3,10 +3,10 @@ import { GetServerSidePropsContext } from "next";
 import Stripe from "stripe";
 
 export default function Success({
-  paymentIntent,
+  setupIntent,
   error,
 }: {
-  paymentIntent: Stripe.Response<Stripe.PaymentIntent>;
+  setupIntent: Stripe.Response<Stripe.SetupIntent>;
   error: string;
 }) {
   return (
@@ -16,7 +16,7 @@ export default function Success({
           Payment Info
         </h5>
 
-        {paymentIntent ? (
+        {setupIntent ? (
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -38,7 +38,7 @@ export default function Success({
                     ID
                   </th>
                   <td className="px-6 py-4">
-                    <pre>{paymentIntent.id}</pre>
+                    <pre>{setupIntent.id}</pre>
                   </td>
                 </tr>
                 <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
@@ -49,10 +49,10 @@ export default function Success({
                     STATUS
                   </th>
                   <td className="px-6 py-4">
-                    <pre>{paymentIntent.status}</pre>
+                    <pre>{setupIntent.status}</pre>
                   </td>
                 </tr>
-                {paymentIntent.status == "requires_action" && (
+                {setupIntent.status == "requires_action" && (
                   <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
                     <th
                       scope="row"
@@ -63,7 +63,7 @@ export default function Success({
                     <td className="px-6 py-4">
                       <a
                         href={
-                          paymentIntent.next_action?.verify_with_microdeposits
+                          setupIntent.next_action?.verify_with_microdeposits
                             ?.hosted_verification_url
                         }
                       >
@@ -90,13 +90,13 @@ export default function Success({
 
 export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   try {
-    const id = query.payment_intent as string;
+    const id = query.setup_intent as string;
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
       apiVersion: "2022-11-15",
     });
-    const paymentIntent = await stripe.paymentIntents.retrieve(id);
+    const setupIntent = await stripe.setupIntents.retrieve(id);
     return {
-      props: { paymentIntent: { ...paymentIntent } },
+      props: { setupIntent: { ...setupIntent } },
     };
   } catch (error) {
     return {

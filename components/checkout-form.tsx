@@ -22,11 +22,17 @@ export default function CheckoutForm({
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
+    const { error } = await stripe.confirmSetup({
       elements,
       confirmParams: {
         return_url: `${process.env
           .NEXT_PUBLIC_BASE_URL!}/success?clientSecret=${clientSecret}`,
+        payment_method_data: {
+          billing_details: {
+            name: "Jasif Shameem K",
+            email: "jasifk@newagesmb.com",
+          },
+        },
       },
     });
 
