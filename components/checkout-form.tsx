@@ -35,7 +35,16 @@ export default function CheckoutForm({
 
   return (
     <>
-      <PaymentElement />
+      <PaymentElement
+        options={{
+          fields: {
+            billingDetails: {
+              name: "never",
+              email: "never",
+            },
+          },
+        }}
+      />
       <button
         type="button"
         onClick={_handleProceddButton}
