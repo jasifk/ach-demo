@@ -14,7 +14,7 @@ export default async function handler(_: NextApiRequest, res: NextApiResponse) {
 
   const setupIntent = await stripe.setupIntents.create({
     customer: 'cus_OGHDocHrvlsxvu', //customer.id,
-    payment_method_types: ["us_bank_account"],
+    payment_method_types: ["card"],
     payment_method_options: {
       us_bank_account: {
         financial_connections: {
